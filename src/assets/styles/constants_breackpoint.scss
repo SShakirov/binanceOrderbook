@@ -1,0 +1,41 @@
+// Отступы для разных размеров экранов
+$breakpoints: (
+  'desktop-1920': 1920px,
+  'desktop': 1440px,
+  '1280': 1280px,
+  '1200': 1200px,
+  'ipad-12.9': 1024px,
+  '1020': 1020px,
+  '900': 900px,
+  'ipad-11': 834px,
+  'ipad-8.3': 744px,
+  '700': 700px,
+  '600': 600px,
+  '500': 500px,
+  '450': 450px,
+  'iphone-8': 375px,
+);
+
+@mixin respond-to($breakpoint) {
+  // If the key exists in the map
+  @if map-has-key($breakpoints, $breakpoint) {
+    // Prints a media query based on the value
+    @media screen and (max-width: #{map-get($breakpoints, $breakpoint)}) {
+      @content;
+    }
+  }
+
+  // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+        + "Available breakpoints are: #{map-keys($breakpoints)}.";
+  }
+}
+
+@mixin respond-to-sugar($property, $breakpoint-values) {
+  @each $key, $value in $breakpoint-values {
+    @include respond-to($key) {
+      #{$property}: $value;
+    }
+  }
+}

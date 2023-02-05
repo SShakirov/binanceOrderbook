@@ -1,0 +1,41 @@
+@import "./constants.scss";
+
+
+@function get-scaled-size($direction, $value, $is-invert: false) {
+  $base: map-get((
+          w : $base-width,
+          h : $base-height,
+  ), $direction);
+
+  $current-value: calc(_($value) / _($base));
+  $return-direction: $direction;
+
+  @if ($is-invert) {
+    $return-direction: map-get((
+            w : 'h',
+            h : 'w',
+    ), $direction);
+  }
+
+  @return map-get((
+          w : calc(100vw * _($current-value)),
+          h : calc(100vh * _($current-value)),
+  ), $return-direction);
+}
+
+@mixin transition-fade {
+  .v-enter-active,
+  .v-leave-active {
+    transition: opacity 0.5s ease;
+  }
+
+  .v-enter-from,
+  .v-leave-to {
+    opacity: 0;
+  }
+}
+
+@function _($value) {
+  @return $value;
+}
+
